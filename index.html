@@ -1,23 +1,411 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Home</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <!--
-      Need a visual blank slate?
-      Remove all code in `styles.css`!
-    -->
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
-  </head>
-  <body>
-    <nav>
-      <a href="/" aria-current="page">Home</a>
-      <a href="/page2.html">Other page</a>
-    </nav>
-    <main>
-      <h1>Home page</h1>
-    </main>
-  </body>
-</html>
+
+  <style>
+    /* 1. 기본 스타일 재정의: 부드러운 색감 및 가독성 향상 */
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.8; /* 행간 확장으로 가독성 향상 */
+      margin: 0;
+      padding: 0;
+      background: #f4f7f6; /* 부드러운 미색 배경 */
+      color: #333;
+    }
+
+    /* 2. 레이아웃 컨테이너 */
+    header, section, footer {
+      max-width: 960px; /* 너비 확장 */
+      margin: 20px auto;
+      padding: 30px; /* 패딩 증가 */
+      background: #fff;
+      border-radius: 12px; /* 둥근 모서리 */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* 그림자 부드럽게 */
+    }
+
+    /* 3. 제목 스타일 */
+    h1, h2, h3 {
+      color: #00796b; /* 주색 변경 (청록색 계열, 청결함 상징) */
+      font-weight: 700;
+      line-height: 1.4;
+      margin-top: 0;
+    }
+    h2 { font-size: 2rem; border-bottom: 2px solid #e0f2f1; padding-bottom: 10px; }
+    h3 { font-size: 1.5rem; color: #26a69a; margin-top: 25px; }
+
+    /* 4. 리스트 및 표 스타일 */
+    ul, ol { padding-left: 20px; margin-bottom: 20px; }
+    li { margin-bottom: 10px; font-size: 1.05rem; }
+    strong { color: #00796b; }
+    p { margin-bottom: 1.5em; font-size: 1.05rem; }
+
+    /* 5. 표 스타일 재정의 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: #fafafa;
+      border-radius: 8px;
+      overflow: hidden; /* 모서리 둥글게 처리 */
+    }
+    th, td {
+      border: 1px solid #e0e0e0;
+      padding: 15px;
+      text-align: left; /* 텍스트 정렬 변경 */
+      vertical-align: top;
+      font-size: 1rem;
+    }
+    th {
+      background: #00796b;
+      color: #fff;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /* 6. CTA 버튼 재정의 */
+    .btn-cta {
+      display: inline-block;
+      padding: 15px 30px;
+      background: #ff7043; /* 주황색 계열로 변경 (긴급성, 주목도 높임) */
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 40px;
+      box-shadow: 0 6px 12px rgba(255, 112, 67, 0.3);
+      transition: background-color 0.3s ease, transform 0.2s;
+      text-align: center;
+      margin-top: 20px;
+      border: none;
+      text-decoration: none; /* a 태그 기본 스타일 제거 */
+    }
+    .btn-cta:hover {
+      background: #f4511e;
+      transform: translateY(-2px);
+    }
+
+    /* 7. 반응형 디자인 */
+    @media(max-width: 768px) {
+      body { padding: 10px; }
+      header, section, footer { margin: 10px auto; padding: 20px; border-radius: 0; }
+      .btn-cta { width: 100%; padding: 18px 0; font-size: 1rem; }
+      th, td { padding: 12px; font-size: 0.9rem; }
+    }
+
+    /* 8. 추가 스타일: 정보성 콘텐츠를 위한 카드/박스 스타일 */
+    .info-box {
+      background: #e0f2f1;
+      border-left: 5px solid #00796b;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      line-height: 1.6;
+    }
+    .info-box h3 { color: #004d40; margin-top: 0; }
+    .faq-item { margin-bottom: 25px; border-bottom: 1px dashed #e0e0e0; padding-bottom: 15px; }
+    .faq-item h3 { color: #333; font-size: 1.2rem; cursor: pointer; }
+    .faq-item p { display: none; margin-top: 10px; padding-left: 15px; border-left: 3px solid #b2dfdb; background: #fafafa; }
+
+    /* 9. SEO 및 UX 개선을 위한 앵커, 네비게이션 스타일 */
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    nav li { margin: 0; }
+    nav a {
+      display: block;
+      padding: 10px 15px;
+      background: #f0f0f0;
+      border-radius: 20px;
+      text-decoration: none;
+      color: #555;
+      font-weight: 400;
+      transition: background-color 0.3s;
+    }
+    nav a:hover { background: #e0e0e0; color: #00796b; }
+    .anchor { display: block; position: relative; top: -100px; visibility: hidden; }
+
+    /* 10. 외부 링크 신뢰성 강조 스타일 */
+    .external-link { color: #004d40; font-weight: bold; }
+
+    /* 11. 폼 스타일 */
+    form { background: #f9f9f9; padding: 25px; border-radius: 8px; border: 1px solid #ddd; }
+    label { display: block; font-weight: 700; color: #555; margin-bottom: 5px; font-size: 1rem; }
+    input[type="text"], input[type="tel"], select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
+    }
+    textarea { resize: vertical; }
+
+    /* 12. 통계 그래프 영역 (실제 그래프는 이미지 또는 js 라이브러리 필요) */
+    .chart-container {
+      margin: 30px 0;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      text-align: center;
+    }
+  </style>
+
+  <!-- Schema.org LocalBusiness 마크업(JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HomeService",
+    "name": "평택 에어컨 청소 전문 업체",
+    "image": "https://domain.com/ac_cleaning_logo.png",
+    "url": "https://domain.com/pyeongtaek-ac-cleaning",
+    "telephone": "031-123-4567",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "경기도 평택시 ○○로 ○○",
+      "addressLocality": "평택시",
+      "addressRegion": "경기",
+      "postalCode": "17900",
+      "addressCountry": "KR"
+    },
+    "areaServed": {
+      "@type": "City",
+      "name": "평택시"
+    },
+    "priceRange": "₩₩₩",
+    "description": "2026년 최신 평택 에어컨 청소 서비스. 시스템/스탠드/벽걸이 에어컨 완전 분해 세척, 곰팡이 및 냄새 제거 전문. 합리적인 가격과 확실한 A/S 보장."
+  }
+  </script>
+</head>
+
+<body>
+  <header>
+    <h1>평택 시스템 에어컨 청소 | 2026년 전문 업체 추천</h1>
+    <p>곰팡이 냄새 완벽 제거! 평택 전 지역 시스템/스탠드/벽걸이 에어컨 분해 청소 서비스</p>
+    <a href="#contact" class="btn-cta">지금 바로 견적 상담 받기</a>
+  </header>
+
+  <nav aria-label="페이지 내 이동">
+    <ul>
+      <li><a href="#service-types">서비스 유형별 안내</a></li>
+      <li><a href="#pricing">비용 및 견적</a></li>
+      <li><a href="#why-clean">왜 청소가 필요한가?</a></li>
+      <li><a href="#process">청소 프로세스</a></li>
+      <li><a href="#qa">자주 묻는 질문 (FAQ)</a></li>
+      <li><a href="#contact">실시간 상담 문의</a></li>
+    </ul>
+  </nav>
+
+  <section id="why-clean">
+    <span id="why-clean-anchor" class="anchor"></span>
+    <h2>에어컨 청소가 필수인 이유: 2026년 위생 관리의 핵심</h2>
+    <div class="info-box">
+      <p>에어컨 내부는 온도와 습도가 높아 세균과 곰팡이가 번식하기 가장 좋은 환경입니다. 에어컨 청소를 단순히 '깨끗하게' 하는 것을 넘어, 가족 건강을 지키는 필수적인 위생 관리로 인식해야 합니다.</p>
+      <p><strong>에어컨 냄새</strong>의 원인 90% 이상은 내부의 곰팡이와 박테리아입니다. 에어컨을 가동할 때마다 이 유해 물질들이 바람을 타고 실내 공기 중으로 퍼져나옵니다. 특히 영유아나 노약자, 호흡기 질환이 있는 가족에게는 치명적인 영향을 줄 수 있습니다.</p>
+    </div>
+    <p>전문적인 에어컨 청소는 단순히 냄새를 제거하는 것 이상의 효과를 제공합니다:</p>
+    <ul>
+      <li><strong>호흡기 건강 보호:</strong> 곰팡이 포자, 세균, 미세먼지 등을 완벽하게 제거하여 알레르기 및 천식 위험을 줄여줍니다.</li>
+      <li><strong>냉방 효율 향상:</strong> 냉각핀에 쌓인 먼지를 제거하여 냉방 성능을 최대 20%까지 개선하고, 전기 요금 절감 효과를 가져옵니다.</li>
+      <li><strong>에어컨 수명 연장:</strong> 내부 부식 방지 및 부품 과부하를 막아 에어컨의 전체 수명을 늘려줍니다.</li>
+    </ul>
+
+    <h3><span style="color:red;">★</span> 2026년 에어컨 청소, 왜 지금 해야 할까요?</h3>
+    <p>여름철 성수기가 되면 예약이 폭주하여 원하는 날짜에 청소 서비스를 받기 어렵습니다. 또한, 성수기에는 청소 비용이 인상될 가능성이 높습니다. 따라서 냉방이 필요해지기 전인 <strong>봄철(3~5월)</strong>에 미리 청소를 예약하는 것이 가장 현명합니다. 저희는 2026년 고객님들의 편리한 예약을 위해 미리 견적 상담을 받고 있습니다.</p>
+  </section>
+
+  <section id="service-types">
+    <span id="service-types-anchor" class="anchor"></span>
+    <h2>평택 에어컨 청소 유형별 서비스 안내</h2>
+    <p>에어컨 유형에 따라 청소 난이도와 방법이 달라집니다. 저희는 모든 유형의 에어컨에 대해 전문적인 완전 분해 청소 서비스를 제공합니다.</p>
+
+    <h3>1. 시스템 에어컨 청소 (천장형 에어컨)</h3>
+    <p>아파트, 오피스텔, 상가 등에서 가장 많이 사용되는 시스템 에어컨은 일반인이 청소하기 가장 어려운 구조입니다. 냉각핀, 드레인판, 팬 등 내부 부품을 완전 분해하여 고압 세척해야 곰팡이를 뿌리까지 제거할 수 있습니다.</p>
+    <ul>
+      <li><strong>분해 범위:</strong> 전면 판넬, 필터, 냉각핀, 송풍팬, 드레인판 등 모든 부품.</li>
+      <li><strong>특징:</strong> 전문 장비(고압 세척기) 필수. 작업 시간이 길지만 효과가 확실함.</li>
+      <li><strong>적합 대상:</strong> 냄새가 심한 아파트 입주 청소, 상가 사무실 청소.</li>
+    </ul>
+
+    <h3>2. 스탠드 에어컨 청소 (가정용)</h3>
+    <p>가정에서 흔히 사용하는 스탠드 에어컨도 내부 깊숙한 곳에 곰팡이가 숨어있기 쉽습니다. 특히 냉각핀 뒷면과 송풍팬 부분은 먼지가 쉽게 쌓여 냉방 효율을 저하시킵니다.</p>
+    <ul>
+      <li><strong>분해 범위:</strong> 전면 커버, 필터, 냉각핀, 팬.</li>
+      <li><strong>특징:</strong> 비교적 분해가 용이하지만, 냉각핀 내부까지 꼼꼼한 세척이 중요.</li>
+      <li><strong>적합 대상:</strong> 2년 이상 사용한 일반 가정.</li>
+    </ul>
+
+    <h3>3. 벽걸이 에어컨 청소 (원룸, 투룸용)</h3>
+    <p>원룸이나 투룸에서 많이 사용하는 벽걸이 에어컨은 크기가 작아 청소가 쉽다고 오해하기 쉽습니다. 하지만 좁은 공간에 곰팡이가 빠르게 퍼지므로 정기적인 관리가 필수입니다.</p>
+    <ul>
+      <li><strong>분해 범위:</strong> 전면 커버, 필터, 냉각핀, 송풍팬.</li>
+      <li><strong>특징:</strong> 비교적 저렴한 비용으로 청소 가능.</li>
+      <li><strong>적합 대상:</strong> 1인 가구, 침실 에어컨 관리.</li>
+    </ul>
+    <a href="#contact" class="btn-cta">우리집 에어컨 맞춤 견적 요청하기</a>
+  </section>
+
+  <section id="pricing">
+    <span id="pricing-anchor" class="anchor"></span>
+    <h2>평택 에어컨 청소 비용 및 견적 가이드: 2026년 최신 정보</h2>
+    <p>에어컨 청소 비용은 에어컨 유형(시스템/스탠드/벽걸이), 청소 범위(일반 청소 vs. 완전 분해 청소), 에어컨 용량, 그리고 오염도에 따라 달라집니다. 저희는 <strong>2026년 기준</strong> 합리적인 평택 지역 평균 가격을 제시하며, 추가 비용 없는 투명한 견적을 원칙으로 합니다.</p>
+
+    <h3>1. 에어컨 청소 평균 비용 (2026년 기준)</h3>
+    <p>아래 표는 평택 지역에서 주로 형성되는 에어컨 청소 비용의 <strong>평균 금액</strong>을 나타냅니다. 정확한 견적은 현장 방문 후 에어컨 상태를 확인하여 결정됩니다.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>에어컨 유형</th>
+          <th>기본 분해 청소 예상 비용</th>
+          <th>특징 및 참고 사항</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>벽걸이 (6~10평형)</td>
+          <td>5만 원 ~ 8만 원</td>
+          <td>가정용 벽걸이 기본 청소. 오염도 심할 시 추가금 발생 가능.</td>
+        </tr>
+        <tr>
+          <td>스탠드 (15~20평형)</td>
+          <td>8만 원 ~ 12만 원</td>
+          <td>가정용 스탠드 에어컨. 냄새 제거를 위한 냉각핀 집중 세척 포함.</td>
+        </tr>
+        <tr>
+          <td>시스템 에어컨 (1way)</td>
+          <td>8만 원 ~ 12만 원</td>
+          <td>가장 일반적인 천장형 에어컨 (1구). 여러 대 동시 진행 시 할인 적용.</td>
+        </tr>
+        <tr>
+          <td>시스템 에어컨 (2~4way)</td>
+          <td>12만 원 ~ 18만 원</td>
+          <td>다방향 천장형 에어컨. 분해가 복잡하고 시간이 오래 걸림.</td>
+        </tr>
+        <tr>
+          <td>실외기 청소 (선택 사항)</td>
+          <td>별도 문의</td>
+          <td>실외기 청소는 에너지 효율에 큰 도움을 줍니다.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>2. 저렴한 곳 vs. 전문 업체의 차이점 (내돈내산 후기 분석)</h3>
+    <p>간혹 인터넷에서 저렴한 가격(3~4만원대)을 제시하는 업체들이 있습니다. <strong>싼곳</strong>을 찾는 것도 중요하지만, 에어컨 청소의 핵심은 '완전 분해' 여부입니다. 저가 업체는 커버만 열어 보이는 곳만 청소하는 '부분 청소'에 그치는 경우가 많습니다. <span style="color:red; font-weight:bold;">진정한 곰팡이 제거를 위해서는 냉각핀 뒷면과 드레인판까지 완전 분해 후 고압 세척이 필수입니다.</span></p>
+    <div class="info-box">
+      <h4>전문 업체 선택 시 고려 사항</h4>
+      <p>저희는 단순히 '청소'만 하는 것이 아니라, <strong>청소 전후 사진 비교</strong>, <strong>친환경 세정제 사용</strong>, 그리고 <strong>확실한 A/S 보장</strong>을 통해 고객님의 만족도를 높입니다. <a href="https://www.e-gov.go.kr/main?a=AA020InfoCaptaView&b=AAA020&c=10134&init=N" target="_blank" class="external-link">정부의 소비자 보호 지침</a>에 따라 정식 등록된 전문 업체에 맡기는 것이 중요합니다.</p>
+    </div>
+
+    <div class="chart-container">
+      <h3>평택 지역 에어컨 청소 수요 예측 (2026년)</h3>
+      <p>※ 그래프 삽입 위치: 성수기(6~8월)와 비수기(3~5월)의 예약량 및 가격 변화 예측 그래프를 삽입하여 고객의 예약 시점 결정에 도움을 줍니다. (예: 봄철 예약 시 약 15% 비용 절감 효과 시각화)</p>
+    </div>
+  </section>
+
+  <section id="process">
+    <span id="process-anchor" class="anchor"></span>
+    <h2>평택 에어컨 청소 7단계 프로세스</h2>
+    <p>믿을 수 있는 청소 서비스를 위해 저희만의 체계적인 분해 세척 프로세스를 공개합니다.</p>
+    <ol>
+      <li><strong>정밀 진단 및 작동 테스트:</strong> 청소 전 에어컨의 현재 상태 및 작동 여부 점검.</li>
+      <li><strong>분해 및 보양 작업:</strong> 에어컨 부품을 완전 분해하고, 물 튀김 방지를 위해 보양재로 주변 가구 및 바닥 보호.</li>
+      <li><strong>고압 세척 및 살균:</strong> 냉각핀, 송풍팬, 드레인판 등 모든 부품을 전문 고압 세척기로 세척. 친환경 살균제를 사용하여 곰팡이와 세균 완벽 제거.</li>
+      <li><strong>헹굼 및 건조:</strong> 세정제 잔여물 없이 깨끗한 물로 헹구고, 건조기로 충분히 말려 습기 제거.</li>
+      <li><strong>조립 및 마감:</strong> 분해했던 부품을 다시 조립.</li>
+      <li><strong>작동 테스트 및 확인:</strong> 조립 후 정상 작동 여부 재확인 및 냉방 효율 점검.</li>
+      <li><strong>청소 전후 비교:</strong> 고객에게 청소 전후 사진을 보여주며 작업 결과 확인.</li>
+    </ol>
+  </section>
+
+  <section id="qa">
+    <span id="qa-anchor" class="anchor"></span>
+    <h2>자주 묻는 질문 (FAQ)</h2>
+    <p>고객님들이 에어컨 청소와 관련하여 가장 많이 궁금해하는 질문들을 모아 답변해 드립니다.</p>
+
+    <div class="faq-item">
+      <h3>Q1. 에어컨 청소 주기는 어떻게 되나요? <span style="font-size:0.9rem; color:#888;">(클릭하여 답변 보기)</span></h3>
+      <p>A. <strong>에어컨 청소 주기</strong>는 사용 환경에 따라 다릅니다. 일반 가정의 경우 최소 1~2년에 한 번, 냄새가 나기 시작하거나 어린 자녀가 있는 가정은 매년 청소를 권장합니다. 특히 상업 시설이나 식당처럼 사용량이 많은 곳은 1년에 2회 이상 청소가 필요할 수 있습니다.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Q2. 셀프 청소와 전문 업체 청소, 어떤 차이가 있나요? <span style="font-size:0.9rem; color:#888;">(클릭하여 답변 보기)</span></h3>
+      <p>A. 셀프 청소는 에어컨 필터나 외부 커버 정도를 닦는 수준입니다. 시중의 세정제를 뿌려도 내부 냉각핀까지 침투하기 어렵고, 세정제 잔여물이 오히려 곰팡이 번식을 가속화할 수 있습니다. <strong>전문 업체 청소</strong>는 완전 분해 후 고압 세척을 통해 곰팡이의 뿌리까지 제거하므로 효과의 차이가 압도적입니다. <a href="https://namu.wiki/w/%EC%97%90%EC%96%B4%EC%BB%A8" target="_blank" class="external-link">에어컨 나무위키</a> 자료를 참고하시면 에어컨 내부 구조의 복잡성을 확인할 수 있습니다.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Q3. 청소 후 냄새가 다시 나지 않나요? <span style="font-size:0.9rem; color:#888;">(클릭하여 답변 보기)</span></h3>
+      <p>A. 전문 업체 청소 직후에는 냄새가 거의 사라집니다. 그러나 에어컨 사용 습관에 따라 다시 냄새가 발생할 수 있습니다. 냄새 재발 방지를 위해 <strong>에어컨 사용 후 10분 정도 송풍 기능으로 내부 습기를 말려주는 것</strong>이 중요합니다.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Q4. 에어컨 청소 장점과 단점, 정말 비용 대비 효과가 있나요? <span style="font-size:0.9rem; color:#888;">(클릭하여 답변 보기)</span></h3>
+      <p>A. <strong>장점</strong>은 명확합니다. 건강한 실내 공기 유지, 냉방 효율 증가, 전기 요금 절감입니다. <strong>단점</strong>은 비용과 시간입니다. 비용이 들고 청소하는 동안 에어컨을 사용할 수 없지만, 장기적인 관점에서 건강과 경제적인 이득이 훨씬 큽니다. <a href="https://www.koreaenergy.or.kr/kor/html/energy/energy_02_1_1.html" target="_blank" class="external-link">한국에너지공단</a>에 따르면 정기적인 청소로 에너지 효율을 높일 수 있다고 강조합니다.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Q5. 평택 지역 에어컨 청소 업체 순위 및 추천 기준이 궁금합니다. <span style="font-size:0.9rem; color:#888;">(클릭하여 답변 보기)</span></h3>
+      <p>A. 저희는 평택 지역에서 다년간 운영하며 꼼꼼한 서비스로 높은 고객 만족도를 유지하고 있습니다. '업체 순위'는 마케팅 요소가 강하며, 저희는 <a href="#contact" class="external-link">직접 상담</a>을 통해 고객님의 에어컨 상태를 정확히 진단하고, <strong>내돈내산 후기</strong>를 참고하여 검증된 서비스를 제공합니다. <a href="https://www.law.go.kr/lsInfoP.do?lsiSeq=108174&efYd=20091218" target="_blank" class="external-link">소비자기본법</a>에 의거하여 정당한 서비스 제공과 보상을 약속합니다.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <span id="contact-anchor" class="anchor"></span>
+    <h2>평택 에어컨 청소 실시간 견적 상담 문의</h2>
+    <p>아래 양식에 상세 정보를 입력해 주시면, 고객님의 에어컨 상태에 맞는 정확한 <strong>에어컨 청소 견적</strong>을 신속하게 안내해 드립니다. 2026년 청소 예약을 서둘러주세요.</p>
+    <form action="/submit" method="POST" style="max-width:700px; margin:auto;">
+      <label for="name">이름<span style="color:red;">*</span></label>
+      <input type="text" id="name" name="name" required placeholder="예: 홍길동" />
+
+      <label for="phone">연락처<span style="color:red;">*</span></label>
+      <input type="tel" id="phone" name="phone" required placeholder="010-1234-5678" pattern="[0-9\-]+" />
+
+      <label for="address">현재 주소<span style="color:red;">*</span> (예: 평택시 ○○동)</label>
+      <input type="text" id="address" name="address" required placeholder="예: 평택시 고덕동 힐스테이트" />
+
+      <label for="move-type">청소할 에어컨 유형<span style="color:red;">*</span></label>
+      <select id="move-type" name="move_type" required>
+        <option value="">선택하세요</option>
+        <option value="시스템 에어컨">시스템 에어컨</option>
+        <option value="스탠드 에어컨">스탠드 에어컨</option>
+        <option value="벽걸이 에어컨">벽걸이 에어컨</option>
+        <option value="실외기">실외기 (선택)</option>
+      </select>
+
+      <label for="unit-count">청소할 에어컨 대수<span style="color:red;">*</span></label>
+      <input type="number" id="unit-count" name="unit_count" required min="1" max="10" placeholder="1대" />
+
+      <label for="desired-date">희망 청소 날짜 (2026년)</label>
+      <input type="date" id="desired-date" name="desired_date" />
+
+      <label for="message">추가 요청 사항 및 특이사항</label>
+      <textarea id="message" name="message" rows="4" placeholder="예: 곰팡이 냄새가 심해요, 주차 공간 확보 필요 등"></textarea>
+
+      <button type="submit" class="btn-cta">견적 문의 보내기</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2026 평택 에어컨 청소 전문 업체 사이트. 사업자 등록번호: 123‑45‑67890</p>
+    <p>연락처: <a href="tel:0311234567">031-123-4567</a> | 이메일: <a href="mailto:help@domain.com">help@domain.com</a></p>
+  </footer>
+
+  <!-- FAQ 항목 클릭 시 펼침 기능 (간단한 JavaScript) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const faqItems = document.querySelectorAll('.faq-item');
+      faqItems.forEach(item => {
+        item.querySelector('h3').addEventListener('click', function() {
+          const answer = item.querySelector('p');
+          if (answer.style.display === 'block') {
+            answer.style.display = 'none';
+          } else {
+            answer.style.display = 'block';
+          }
+        });
+      });
+    });
+  </script>
+
+  
